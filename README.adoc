@@ -1,0 +1,342 @@
+:ext-relative: {outfilesuffix}
+:imagesdir: docs/img
+
+[[rlbox]]
+= RL-Sandbox
+
+Selected algorithms and exercises from the book Sutton, R. S. & Barton, A.: Reinforcement Learning: An Introduction.
+2nd Edition, MIT Press, Cambridge, 2018.
+
+* Results of experiments are dumped to hdf5 files and are placed in .dump directory.
+* Gathered data are by default used to present various charts about experiment.
+
+link:docs/index{ext-relative}}[>>> Documentation <<<]
+
+[[rlbox.setup]]
+== Setup
+
+.Install
+----
+git clone https://github.com/ocraft/rl-sandbox.git
+cd rl-sandbox
+pip install -e .
+----
+
+.Test
+----
+python setup.py test
+----
+
+.Run
+----
+python -m rlbox.run --testbed=narmedbandit.SampleAverage
+----
+
+.Command line parameters
+[caption="", options="header"]
+|===
+|Param |Description |Default
+|--testbed |[required] Name of a testbed that you want to use. |None
+|--start |Run experiment using a chosen testbed. |true
+|--plot |Plot data that was generated with a chosen testbed. |true
+|--help |Show a list of all flags. |false
+|===
+
+[[rlbox.install.req]]
+=== Requirements
+* python >= 3.6
+* absl-py >= 0.7.0
+* h5py >= 2.9.0
+* numba >= 0.42
+* numpy >= 1.15
+* matplotlib >= 3.0.2
+* pandas >= 0.24
+* tables >= 3.4
+* tqdm >= 4.31.1
+
+.Test dependencies
+* pytest-runner >= 4.2
+* pytest == 4.0.2
+
+[[rlbox.solutions]]
+== Solutions
+
+[caption="", options="header"]
+|===
+|Section |Run |Output
+|<<REIN, 2.3 The 10-armed Testbed>> |python -m rlbox.run --testbed=narmedbandit.SampleAverage
+|link:docs/img/result/2.3.png[1]
+|<<REIN, 2.5 Tracking a Nonstationary Problem#Exercise 2.5>>|python -m rlbox.run --testbed=narmedbandit.WeightedAverage
+|link:docs/img/result/2.5.png[1]
+|<<REIN, 2.6 Optimistic Initial Values>>|python -m rlbox.run --testbed=narmedbandit.OptInitVal
+|link:docs/img/result/2.6.png[1]
+|<<REIN, 2.7 Upper-Confidence-Bound Action Selection>>|python -m rlbox.run --testbed=narmedbandit.Ucb
+|link:docs/img/result/2.7.png[1]
+|<<REIN, 2.8 Gradient Bandit Algorithm>>|python -m rlbox.run --testbed=narmedbandit.Gradient
+|link:docs/img/result/2.8.png[1]
+|<<REIN, 2.10 Summary>>|python -m rlbox.run --testbed=narmedbandit.ParamStudy
+|link:docs/img/result/2.10.png[1]
+|<<REIN, 4.3 Policy Iteration#Exercise 4.7>>|python -m rlbox.run --testbed=car_rental_v1
+|link:docs/img/result/4.3_4.7_a.png[1] link:docs/img/result/4.3_4.7_b.png[2]
+|<<REIN, 4.3 Policy Iteration#Exercise 4.9>>|python -m rlbox.run --testbed=car_rental_v2
+|link:docs/img/result/4.3_4.9_a.png[1] link:docs/img/result/4.3_4.9_b.png[2]
+|<<REIN, 4.4 Value Iteration#Exercise 4.7>>|python -m rlbox.run --testbed=gambler.0.4
+|link:docs/img/result/4.4_4.7_04_a.png[1] link:docs/img/result/4.4_4.7_04_b.png[2]
+|<<REIN, 4.4 Value Iteration#Exercise 4.7>>|python -m rlbox.run --testbed=gambler.0.25
+|link:docs/img/result/4.4_4.7_04_a.png[1] link:docs/img/result/4.4_4.7_04_b.png[2]
+|<<REIN, 4.4 Value Iteration#Exercise 4.7>>|python -m rlbox.run --testbed=gambler.0.55
+|link:docs/img/result/4.4_4.7_55_a.png[1] link:docs/img/result/4.4_4.7_55_b.png[2]
+|<<REIN, 5.7 Off-policy Monte Carlo Control#Exercise 5.12>>|python -m rlbox.run --testbed=racetrack
+|link:docs/img/result/5.7.png[1]
+|<<REIN, 6.4. Sarsa: On-policy TD Control#Exercise 6.9>>|python -m rlbox.run --testbed=gridworld.windy
+|link:docs/img/result/6.4_6.9.png[1]
+|<<REIN, 6.4. Sarsa: On-policy TD Control#Exercise 6.10>>|python -m rlbox.run --testbed=gridworld.windy_stochastic
+|link:docs/img/result/6.4_6.10.png[1]
+|<<REIN, 7.2. n-step Sarsa>>|python -m rlbox.run --testbed=gridworld.NStepSarsa
+|link:docs/img/result/7.2.png[1]
+|<<REIN, 8.2 Dyna: Integrated Planning, Acting, and Learning>>|python -m rlbox.run --testbed=maze.DynaQ
+|link:docs/img/result/8.2.png[1]
+|<<REIN, 8.3 When the Model Is Wrong#Exercise 8.4>>|python -m rlbox.run --testbed=maze.DynaQ+
+|link:docs/img/result/8.3.png[1]
+|<<REIN, 10.1 Episodic Semi-gradient Control#Example 10.1: Mountain Car Task>>
+|python -m rlbox.run --testbed=mountain_car.SemiGradientSarsa
+|link:docs/img/result/10.1_a.png[1] link:docs/img/result/10.1_b.png[2]
+|<<REIN, 12.7 Sarsa(&#955;)>> |python -m rlbox.run --testbed=mountain_car.TrueSarsaLambda
+|link:docs/img/result/12.7_a.png[1] link:docs/img/result/12.7_b.png[2]
+|<<REIN, 13.5 Actor–Critic Methods>> |python -m rlbox.run --testbed=mountain_car.ActorCritic
+|link:docs/img/result/13.5_a.png[1] link:docs/img/result/13.5_b.png[2]
+|===
+
+
+[[rlbox.experiments]]
+== Experiments
+
+.PC i7-4770 CPU @ 3.4GHZ; 16 GB RAM; GeForce GTX 660; cpython
+[%autowidth, caption="", options="header"]
+|===
+|Testbed| Environment |Exe |Time [s]
+
+|narmedbandit.SampleAverage
+a|
+* N-Armed Bandit [steps=1000, arms=10, stationary=True]
+* Runs: 2000
+a|
+* (smpl_avg, epsilon: 0.0)
+* (smpl_avg, epsilon: 0.01)
+* (smpl_avg, epsilon: 0.1)
+|11
+
+|narmedbandit.WeightedAverage
+a|
+* N-Armed Bandit [steps: 10000, arms=10, stationary=False]
+* Runs: 2000
+a|
+* (smpl_avg, epsilon: 0.1)
+* (weight_avg, epsilon: 0.1, alpha: 0.2)
+|78
+
+|narmedbandit.OptInitVal
+a|
+* N-Armed Bandit [steps: 1000, arms=10, stationary=True]
+* Runs: 2000
+a|
+* (weight_avg, epsilon: 0.0, alpha: 0.1, bias: 5.0)
+* (weight_avg, epsilon: 0.1, alpha: 0.1, bias: 0.0)
+|7.51
+
+|narmedbandit.Ucb
+a|
+* N-Armed Bandit [steps: 1000, arms=10, stationary=True]
+* Runs: 2000
+a|
+* (smpl_avg, epsilon: 0.1)
+* (ucb, c: 2)
+|11.78
+
+|narmedbandit.Gradient
+a|
+* N-Armed Bandit [steps: 1000, arms=10, stationary=True, mean=4.0]
+* Runs: 2000
+a|
+* (gradient, alpha: 0.1, baseline: True)
+* (gradient, alpha: 0.4, baseline: True)
+* (gradient, alpha: 0.1, baseline: False)
+* (gradient, alpha: 0.4, baseline: False)
+|105
+
+|narmedbandit.ParamStudy
+a|
+* N-Armed Bandit [steps: 1000, arms=10, stationary=True]
+* Runs: 2000
+a|
+* (SMPL_AVG, epsilon: 1/128)
+* (SMPL_AVG, epsilon: 1/64)
+* (SMPL_AVG, epsilon: 1/32)
+* (SMPL_AVG, epsilon: 1/16)
+* (SMPL_AVG, epsilon: 1/8)
+* (SMPL_AVG, epsilon: 1/4)
+
+* (GRADIENT, alpha: 1/32)
+* (GRADIENT, alpha: 1/16)
+* (GRADIENT, alpha: 1/8)
+* (GRADIENT, alpha: 1/4)
+* (GRADIENT, alpha: 1/2)
+* (GRADIENT, alpha: 1)
+* (GRADIENT, alpha: 2)
+* (GRADIENT, alpha: 4)
+
+* (UCB, c: 1/16)
+* (UCB, c: 1/8)
+* (UCB, c: 1/4)
+* (UCB, c: 1/2)
+* (UCB, c: 1)
+* (UCB, c: 2)
+* (UCB, c: 4)
+
+* (WEIGHT_AVG, epsilon: 0.0, alpha: 0.1, bias: 1/4)
+* (WEIGHT_AVG, epsilon: 0.0, alpha: 0.1, bias: 1/2)
+* (WEIGHT_AVG, epsilon: 0.0, alpha: 0.1, bias: 1)
+* (WEIGHT_AVG, epsilon: 0.0, alpha: 0.1, bias: 2)
+* (WEIGHT_AVG, epsilon: 0.0, alpha: 0.1, bias: 4)
+|303
+
+|carrental.JackCarRentalV1
+a|
+* Jack's Car Rental [max_move=5, max_cars=20, expct=[3, 4, 3, 2]]
+a|
+* gamma=0.9, epsilon=1.0
+a|
+* 441 (mdp generation)
+* 258 (policy iteration)
+
+|carrental.JackCarRentalV2
+a|
+* Jack's Car Rental [max_move=5, max_cars=20, expct=[3, 4, 3, 2], modified=True]
+a|
+* gamma=0.9, epsilon=1.0
+a|
+* 440 (mdp generation)
+* 219 (policy iteration)
+
+|gambler.0.4
+a|
+* Gambler's Problem [ph=0.4]
+a|
+* gamma=1.0, epsilon=1e-9
+|22
+
+|gambler.0.25
+a|
+* Gambler's Problem [ph=0.25]
+a|
+* gamma=1.0, epsilon=1e-9
+|16
+
+|gambler.0.55
+a|
+* Gambler's Problem [ph=0.55]
+a|
+* gamma=1.0, epsilon=0.01
+|11
+
+|racetrack
+a|
+* RaceTrack [steps=10000]
+* Runs: 50000
+a|
+* gamma=1.0
+a|
+* 1091 (episodes generation)
+* 187 (off-policy monte carlo learning)
+
+|gridworld.windy
+a|
+* WindyGridWorld [stochastic=False]
+* Runs: 200
+a|
+* gamma=1.0, alpha=0.5, epsilon=0.1
+a|
+0.05
+
+|gridworld.windy_stochastic
+a|
+* WindyGridWorld [stochastic=True]
+* Runs: 200
+a|
+* gamma=1.0, alpha=0.5, epsilon=0.1
+a|
+0.33
+
+|gridworld.NStepSarsa
+a|
+* WindyGridWorld [stochastic=False]
+* Runs: 200
+a|
+* n=3, gamma=1.0, alpha=0.5, epsilon=0.1
+a|
+0.32
+
+|gridworld.NStepSarsa
+a|
+* WindyGridWorld [stochastic=False]
+* Runs: 200
+a|
+* n=3, gamma=1.0, alpha=0.5, epsilon=0.1
+a|
+0.32
+
+|maze.DynaQ
+a|
+* Maze(maze_type=0)
+* Runs: 30
+a|
+* DYNA_Q, n=50, gamma=0.95, alpha=0.1, epsilon=0.1, episodes=50
+* DYNA_Q, n=5, gamma=0.95, alpha=0.1, epsilon=0.1, episodes=50
+* DYNA_Q, n=0, gamma=0.95, alpha=0.1, epsilon=0.1, episodes=50
+a|
+18
+
+|maze.DynaQ+
+a|
+* Maze(maze_type=1)
+* Runs: 30
+a|
+* DYNA_Q, n=10, gamma=0.95, alpha=1.0, epsilon=0.1, episodes=50, kappa=0, steps=3000
+* DYNA_Q, n=10, gamma=0.95, alpha=1.0, epsilon=0.1, episodes=50, kappa=1e-4, steps=3000
+* DYNA_Q_V2, n=10, gamma=0.95, alpha=1.0, epsilon=0.1, episodes=50, kappa=1e-4, steps=3000
+a|
+29
+
+|mountain_car.SemiGradientSarsa
+a|
+* MountainCar()
+* Runs: 10
+a|
+* SEMIGRADIENT_SARSA, gamma=1.0, alpha=0.5, epsilon=0.0, episodes=500
+a|
+52
+
+|mountain_car.TrueSarsaLambda
+a|
+* MountainCar()
+* Runs: 10
+a|
+* TRUE_SARSA_LAMBDA, gamma=1.0, alpha=0.5, epsilon=0.0, lmbda=0.9, episodes=500
+a|
+51
+
+|mountain_car.ActorCriticLambda
+a|
+* MountainCar()
+* Runs: 10
+a|
+* ACTOR_CRITIC, gamma=1.0, alpha_w=0.2, alpha_theta=0.01, lambda_w=0.9, lambda_theta=0.9, episodes=500
+a|
+115
+
+|===
+
+[bibliography]
+[[rlbox.bibliography]]
+== Bibliography
+- [[REIN]] Sutton, R. (2018). Reinforcement Learning. 2nd ed. Cambridge: MIT Press.

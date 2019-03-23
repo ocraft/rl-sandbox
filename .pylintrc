@@ -1,0 +1,9 @@
+[MESSAGES CONTROL]
+enable=all
+disable=C0111
+
+[BASIC]
+variable-rgx=[a-zA-Z_][a-z0-9_]{0,30}$
+argument-rgx=[a-zA-Z_][a-z0-9_]{0,30}$
+method-rgx=[a-zA-Z_][a-z0-9_]{0,70}$
+attr-rgx=[a-zA-Z_][a-zA-Z0-9_]{0,30}$

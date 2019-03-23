@@ -1,0 +1,140 @@
+:imagesdir: img
+
+.Testbed
+[plantuml, testbed, svg]
+....
+skinparam packageStyle Frame
+
+package rlbox.core {
+    interface AgentProgram {
+        action call(observation)
+    }
+
+    interface Environment {
+        boolean done()
+    }
+
+    interface Actuator {
+        call(action, environment)
+    }
+
+    interface Sensor {
+        observation call(environment)
+    }
+
+    class Spec
+    class Space
+    note left of Spec: action spec and observation spec
+
+    class Agent
+    class Run
+}
+
+package rlbox.testbed.sink {
+    class Sink
+    class SharedMem
+    class Store
+}
+
+package rlbox.testbed {
+    interface Testbed {
+        run()
+        worker(runs, env_cfg, task, param)
+        plot()
+    }
+}
+
+Spec --> "1..*" Space
+
+Environment --> Spec : provides >
+AgentProgram --> Spec
+
+Actuator --> Environment : executes action >
+Sensor --> Environment : gets observation from >
+
+Run --> Agent
+Run --> Environment
+Agent --o AgentProgram
+Agent --o Actuator
+Agent --o Sensor
+
+Testbed --> "1..*" Run
+Testbed --> Sink : dumps data to >
+
+Sink --> SharedMem : provides >
+Testbed --> Store : saves data in >
+Sink --> Store : saves data in >
+....
+
+.Interfaces
+AgentProgram:: defines behaviour of an agent, maps observation to action
+Actuator:: maps agent decision to actual activiy in an environment
+Sensor:: maps observation of an environment to an input for agent program
+Environment:: the surroundings or conditions in which an agent operates
+Testbed:: multiprocess experimental runs of the agents in an environment with data gathering and plotting
+
+.Classes
+Run:: series of an agent activities in an environment
+Agent:: entity which observes through sensors and acts upon an environment using actuators
+Sink, SharedMem:: multiprocess shared memory for statistical/performance data that are saved as HDF5 file
+Sampler:: provides precomputed random samples of various distribution
+Space:: holds information about any generic space
+Spec:: convenience class to hold a list of spaces
+Store:: wrapper for access to hdf5 data file
+
+.N-Armed Bandit Testbed
+[plantuml, narmedbandit, svg]
+....
+skinparam packageStyle Frame
+
+package rlbox.core {
+    interface AgentProgram
+    interface Environment
+}
+
+package rlbox.agent.tab.epsilongreedy {
+    abstract class EpsilonGreedy
+    class SampleAverage
+    class WeightedAverage
+    class WeightedAverageNBias
+}
+
+package rlbox.agent.tab.ucb {
+    class Ucb1
+}
+
+package rlbox.agent.tab.gradient {
+    class GradientBandit
+}
+
+package rlbox.env.narmedbandit {
+    class Bandit
+    class NonstationaryBandit
+    class NArmedBanditEnv
+}
+
+package rlbox.testbed {
+    interface Testbed
+}
+
+package rlbox.testbed.narmedbandit {
+    class NArmedBanditTestbed
+    class NArmedBanditParamStudy
+}
+
+AgentProgram <|-- EpsilonGreedy
+AgentProgram <|-- Ucb1
+AgentProgram <|-- GradientBandit
+EpsilonGreedy <|-- SampleAverage
+EpsilonGreedy <|-- WeightedAverage
+WeightedAverage <|-- WeightedAverageNBias
+
+Environment <|-- NArmedBanditEnv
+
+NArmedBanditEnv --> Bandit
+NArmedBanditEnv --> NonstationaryBandit
+
+Testbed <|-- NArmedBanditTestbed
+NArmedBanditTestbed <|-- NArmedBanditParamStudy
+
+....

@@ -1,0 +1,17 @@
+# project
+.idea
+.asciidoctor
+.ipynb_checkpoints
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# environment
+.venv
+*.egg-info
+.eggs
+
+# cache
+__pycache__
+.pytest_cache
+.dump
