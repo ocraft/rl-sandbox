@@ -10,7 +10,7 @@ Selected algorithms and exercises from the book Sutton, R. S. & Barton, A.: Rein
 * Results of experiments are dumped to hdf5 files and are placed in .dump directory.
 * Gathered data are by default used to present various charts about experiment.
 
-link:docs/index{ext-relative}}[>>> Documentation <<<]
+link:docs/index.html[>>> Documentation <<<]
 
 [[rlbox.setup]]
 == Setup
